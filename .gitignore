@@ -1,0 +1,18 @@
+# Submission path budgets (uncompressed files):
+# artifacts/** <= 2 MiB; dist/** <= 1 MiB;
+# all other deliverables <= 3 MiB, including this file <= 1 KiB.
+# Reserve 2 MiB for Git/bundle overhead; total ceiling is 8 MiB.
+!artifacts/
+!artifacts/**
+!dist/
+!dist/**
+
+# Generated dependencies and caches have a zero-byte submission budget.
+**/node_modules/
+**/.vite/
+**/.cache/
+**/.npm/
+**/.pnpm-store/
+**/.yarn/cache/
+**/*.tsbuildinfo
+test/scratch/

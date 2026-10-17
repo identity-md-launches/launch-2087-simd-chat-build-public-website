@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-17T16:11:08.698472+00:00",
+  "typecheck": {
+    "command": "node test/scratch/toolchain/node_modules/typescript/bin/tsc --project test/scratch/tsconfig.json --noEmit",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "EHS_DEPENDENCY_ROOT=test/scratch/toolchain node test/scratch/toolchain/node_modules/vite/bin/vite.js build --configLoader native",
+    "exitCode": 0
+  },
+  "interactions": {
+    "passed": 18,
+    "total": 18,
+    "report": "interaction-results.json"
+  },
+  "taste": {
+    "passed": 15,
+    "total": 16,
+    "exception": "FIGR_HELOC is a real provider ticker, retained as market data."
+  },
+  "metadata": true,
+  "relativeHtmlAssets": true,
+  "pngShareCard": [
+    1200,
+    630
+  ],
+  "manifestLockMatch": true,
+  "sourceSha256": {
+    "src/main.tsx": "7dd0ec7c005211dc0191dbe92115cb395ec8f04c2591d2259039a5d7b42fb3c0",
+    "src/types.ts": "9cad00e3a486781f6ae311248b04f91f9b0440eeb88b73ad2a6f658ee450818f",
+    "src/styles.css": "726d87e382bb4e9ddb24d466046e233a014e4acc6889615d16448252ca046921",
+    "src/api.ts": "25db12bf8da7f1e51b608e98ec96c5692046fa9f4ca3dd7694d4bdb330b05640",
+    "src/format.ts": "a7ea3615aa141b71cc1bd5a9dc86c3172347d65f1f9a138d09e3ee12a4151a8d",
+    "src/App.tsx": "836bc2fe1a305b6a91c488bba23595fd7c78041ad3bc8cc2277eb5f0fc58ba3e",
+    "src/components/Shared.tsx": "2714cc27f09e3b37aab50092dc580a19c457e0691f47bc28d4b335108660f822",
+    "src/components/Chart.tsx": "33b7880c42b06190202dab3b8d52c7bf87da8848ab71b0cb57f492ddc4473c69",
+    "src/components/Search.tsx": "9d4aa162d2318e93070ee388ec85b905f261f2cbd5dafbe6e159e9ce9f9eff9a",
+    "src/data/snapshot.json": "b5c7753d426572131bd6056bcbb3b19c9f709df8fe171e87f7c3f1c7118db9d4",
+    "src/assets/social-card.svg": "8cb0c456a6586df94368ff395dd311281ee83a2ad6d7b5e40afc8cad7c3b2dc7"
+  },
+  "exportSha256": {
+    "dist/social-card.png": "2c57e17bfabf0fccc0c4e010287120f6d18340f783036a7c02430193072308ad",
+    "dist/hand.svg": "0330a5b85bf5751cf2bd18572503b5568271439cc1b305c491f4b4ff73a1a657",
+    "dist/favicon.svg": "88062787268b84d8f7c818bab4bbc71eb61dbedc501368d828ccda97e0f84d11",
+    "dist/index.html": "9ac7b548037bd2762dcbf5473246bb343b585969e300feeb50ea5375ed79ca17",
+    "dist/coins/ethereum.png": "b90012bba7d1ac4b56879543de44b7af3af8079c16f3913499030bc8e770c3c8",
+    "dist/coins/bitcoin.png": "c7341cff7769a7e68356b91036bacb581509647ed262f8becb86d4cd850ab620",
+    "dist/coins/tether.png": "89d573c0788f88f9334995e8f8906cdb0dc689a6248cae29f3c08a746cfa333f",
+    "dist/coins/binancecoin.png": "c30830ce6f2e28ebf687b66d0ff20635ddef6fe74dd05105c22e38c3c53f659d",
+    "dist/coins/avalanche-2.png": "73f99738b2bbc3d3fe834936dc3638733bde9a54fe53824ada882e7d3f2cc253",
+    "dist/coins/ripple.png": "2e0dd5f6412008f7fc7fff369906bd92df3dff6046f7f54eeb075c16aa28bc7e",
+    "dist/coins/sui.png": "a7b792fec9255c061d04946681cbd24f9702d4861ff03a8dd4ac9068c3356036",
+    "dist/coins/chainlink.png": "e7c349378c3d5763292d915556c474f62cdfac5fad0891c2f689087dfd8bc4ce",
+    "dist/coins/dogecoin.png": "e7f8168927fe89c22c78104232fb78857d5153a197588502e189844ab1fe614f",
+    "dist/coins/hyperliquid.png": "0451149a917679ad315c3db479cc1d187558799698c2340903b58958a02c92f1",
+    "dist/coins/usd-coin.png": "0a1ef968332153be220cdfe3b401252824b825b54807dfc1444e934b02cf2ca4",
+    "dist/coins/uniswap.png": "9b2181d2668c61e0d15143f5f9ae84979464af53fb9212ddecc5ea9243c2bcbf",
+    "dist/coins/solana.png": "167bfe79b1b99143b7502bafc0918a47776d617f618a83d1a37879d843f1424a",
+    "dist/coins/pepe.png": "e6075255c4eefe13d914097515fd85b25673d0fb4c1c134b2d4f9df46bb761f3",
+    "dist/fonts/jakarta-latin.woff2": "153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79",
+    "dist/fonts/OFL.txt": "995c7199cab65954f545996326755daee7b63cc6b42b06c13da1f9502ab08a99",
+    "dist/assets/index-DDY9XOP5.css": "2ffd6a173d74c62cfebc64e266d48ed03206a55b64ecabaa1ab63de34008f27f",
+    "dist/assets/index-B3czb_r-.js": "98b975fe003792db4eb32905a2a7573b65a9efd2a98553ecd33891309a65e6dd"
+  }
+}

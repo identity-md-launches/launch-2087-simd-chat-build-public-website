@@ -1,0 +1,31 @@
+{
+  "responses": [
+    {
+      "url": "https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=40",
+      "status": 200
+    },
+    {
+      "url": "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=3600",
+      "status": 200
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=7d",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://api.coingecko.com/api/v3/global",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://api.coingecko.com/api/v3/coins/bitcoin/tickers?order=volume_desc&depth=false",
+      "error": "net::ERR_FAILED"
+    }
+  ],
+  "statuses": [
+    "Snapshot · 17 Okt, 17.50 GMT+2",
+    "Terbaru",
+    "Snapshot"
+  ]
+}

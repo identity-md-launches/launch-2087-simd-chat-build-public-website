@@ -1,0 +1,65 @@
+{
+  "limitBytes": 8388608,
+  "pathBudgetsBytes": {
+    "artifacts/**": 2097152,
+    "dist/**": 1048576,
+    "otherDeliverables": 3145728,
+    ".gitignoreWithinOther": 1024,
+    "generatedDependencyCacheDirectories": 0,
+    "reservedBundleOverhead": 2097152
+  },
+  "measuredBytesExcludingThisReport": {
+    "artifacts": 603985,
+    "dist": 561690,
+    "other": 505562
+  },
+  "reportReserveBytes": 16384,
+  "conservativeTotalFileBytes": 1687621,
+  "conservativeTotalWithReservedBundleOverhead": 3784773,
+  "zipAuditBytesExcludingThisReport": 896885,
+  "fileCountExcludingThisReport": 78,
+  "largestFiles": [
+    {
+      "path": "dist/assets/index-B3czb_r-.js",
+      "bytes": 423618
+    },
+    {
+      "path": "artifacts/token-analysis.jpg",
+      "bytes": 329176
+    },
+    {
+      "path": "src/data/snapshot.json",
+      "bytes": 162757
+    },
+    {
+      "path": "artifacts/desktop.jpg",
+      "bytes": 148224
+    },
+    {
+      "path": "artifacts/mobile.jpg",
+      "bytes": 58607
+    },
+    {
+      "path": "src/App.tsx",
+      "bytes": 53081
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 43647
+    },
+    {
+      "path": "public/social-card.png",
+      "bytes": 43482
+    }
+  ],
+  "checks": {
+    "withinAllPathBudgets": true,
+    "withinTotalBudgetIncludingReservedOverhead": true,
+    "noSymlinks": true,
+    "noDependencyCacheDirectories": true,
+    "noPackageArchives": true,
+    "noSourceMaps": true,
+    "distSocialImageMatchesSource": true
+  },
+  "scope": "All deliverable files; supplied inputs, protected repository metadata, and test/scratch are excluded. ZIP is only a size audit outside the repository, not the platform Git submission bundle."
+}

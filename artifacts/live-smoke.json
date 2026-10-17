@@ -1,0 +1,68 @@
+{
+  "at": "2026-10-17T16:07:44.073Z",
+  "responses": [
+    {
+      "status": 200,
+      "url": "https://api.coingecko.com/api/v3/global"
+    },
+    {
+      "status": 429,
+      "url": "https://api.coingecko.com/api/v3/coins/bitcoin/tickers?order=volume_desc&depth=false"
+    },
+    {
+      "status": 200,
+      "url": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=7d"
+    },
+    {
+      "status": 200,
+      "url": "https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=40"
+    },
+    {
+      "status": 200,
+      "url": "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=3600"
+    },
+    {
+      "status": 200,
+      "url": "https://eth.blockscout.com/api/v2/tokens/0x6982508145454Ce325dDbE47a25d4ec3d2311933"
+    },
+    {
+      "status": 200,
+      "url": "https://api.dexscreener.com/latest/dex/tokens/0x6982508145454Ce325dDbE47a25d4ec3d2311933"
+    },
+    {
+      "status": 200,
+      "url": "https://api.geckoterminal.com/api/v2/networks/eth/tokens/0x6982508145454Ce325dDbE47a25d4ec3d2311933/pools?page=1"
+    },
+    {
+      "status": 200,
+      "url": "https://api.geckoterminal.com/api/v2/networks/eth/tokens/0x6982508145454Ce325dDbE47a25d4ec3d2311933/pools?page=1"
+    },
+    {
+      "status": 200,
+      "url": "https://api.geckoterminal.com/api/v2/networks/eth/pools/0xa43fe16908251ee70ef74718545e4fe6c5ccec9f/trades"
+    },
+    {
+      "status": 429,
+      "url": "https://api.coingecko.com/api/v3/coins/pepe/tickers?order=volume_desc&depth=false"
+    },
+    {
+      "status": 200,
+      "url": "https://api.geckoterminal.com/api/v2/networks/eth/pools/0xa43fe16908251ee70ef74718545e4fe6c5ccec9f/ohlcv/hour?aggregate=1&limit=24&currency=usd&token=0x6982508145454Ce325dDbE47a25d4ec3d2311933"
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=pepe&sparkline=true",
+      "error": "net::ERR_FAILED"
+    }
+  ],
+  "errors": [],
+  "fonts": {
+    "loaded": true,
+    "body": "\"Plus Jakarta Sans\", Arial, sans-serif"
+  },
+  "enlargedText": {
+    "viewport": 800,
+    "scroll": 800
+  }
+}

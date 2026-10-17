@@ -1,0 +1,30 @@
+{
+  "name": "everted-hand-swarm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --configLoader native",
+    "build": "vite build --configLoader native",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "refresh:snapshot": "node scripts/refresh-snapshot.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "lucide-react": "0.468.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "typescript": "5.9.3",
+    "vite": "7.1.12",
+    "playwright": "1.56.1",
+    "@axe-core/playwright": "4.10.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
