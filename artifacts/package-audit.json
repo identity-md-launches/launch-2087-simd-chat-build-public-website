@@ -9,23 +9,26 @@
     "reservedBundleOverhead": 2097152
   },
   "measuredBytesExcludingThisReport": {
-    "artifacts": 603985,
-    "dist": 561690,
-    "other": 505562
+    "artifacts": 1178423,
+    "dist": 562947,
+    "other": 534732
   },
   "reportReserveBytes": 16384,
-  "conservativeTotalFileBytes": 1687621,
-  "conservativeTotalWithReservedBundleOverhead": 3784773,
-  "zipAuditBytesExcludingThisReport": 896885,
-  "fileCountExcludingThisReport": 78,
+  "conservativeTotalFileBytes": 2292486,
+  "conservativeTotalWithReservedBundleOverhead": 4389638,
+  "fileCountExcludingThisReport": 88,
   "largestFiles": [
     {
-      "path": "dist/assets/index-B3czb_r-.js",
-      "bytes": 423618
+      "path": "dist/assets/index-BddlRxB8.js",
+      "bytes": 424973
     },
     {
       "path": "artifacts/token-analysis.jpg",
       "bytes": 329176
+    },
+    {
+      "path": "artifacts/revision/chromium-desktop.png",
+      "bytes": 293428
     },
     {
       "path": "src/data/snapshot.json",
@@ -36,30 +39,35 @@
       "bytes": 148224
     },
     {
+      "path": "artifacts/revision/chromium-contract-cex-1440.png",
+      "bytes": 66115
+    },
+    {
+      "path": "artifacts/revision/chromium-mobile.png",
+      "bytes": 58757
+    },
+    {
       "path": "artifacts/mobile.jpg",
       "bytes": 58607
     },
     {
       "path": "src/App.tsx",
-      "bytes": 53081
+      "bytes": 55602
     },
     {
-      "path": "src/styles.css",
-      "bytes": 43647
-    },
-    {
-      "path": "public/social-card.png",
-      "bytes": 43482
+      "path": "artifacts/revision/chromium-watchlist-pending.png",
+      "bytes": 49697
     }
   ],
   "checks": {
     "withinAllPathBudgets": true,
     "withinTotalBudgetIncludingReservedOverhead": true,
     "noSymlinks": true,
+    "noSubmodules": true,
     "noDependencyCacheDirectories": true,
     "noPackageArchives": true,
     "noSourceMaps": true,
     "distSocialImageMatchesSource": true
   },
-  "scope": "All deliverable files; supplied inputs, protected repository metadata, and test/scratch are excluded. ZIP is only a size audit outside the repository, not the platform Git submission bundle."
+  "scope": "Regular deliverable files listed by Git, including new untracked outputs; supplied inputs and test/scratch excluded. File bytes plus 2 MiB reserved Git/bundle overhead are a conservative size bound, not a measurement of a platform-generated Git bundle."
 }

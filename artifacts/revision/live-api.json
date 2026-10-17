@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-17T16:42:38.014Z",
+  "scope": "Worker HTTP smoke only; not a browser/CORS test. Availability is not a regression gate.",
+  "results": [
+    {
+      "url": "https://api.coingecko.com/api/v3/coins/ethereum/contract/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "status": 200,
+      "id": "weth",
+      "tickerCount": 100
+    },
+    {
+      "url": "https://api.coingecko.com/api/v3/coins/pepe/tickers?order=volume_desc&depth=false",
+      "status": 200,
+      "tickerCount": 100
+    }
+  ]
+}

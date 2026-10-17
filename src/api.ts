@@ -3,6 +3,7 @@ import type {
   Candle,
   Coin,
   Exchange,
+  ExchangeResource,
   GlobalData,
   Pair,
   Period,
@@ -58,20 +59,22 @@ const networks: Record<string, string> = {
   optimism: "optimism",
   avalanche: "avax",
 };
+const platformChains: Record<string, string> = {
+  ethereum: "ethereum",
+  base: "base",
+  solana: "solana",
+  "binance-smart-chain": "bsc",
+  "arbitrum-one": "arbitrum",
+  "polygon-pos": "polygon",
+  "optimistic-ethereum": "optimism",
+  avalanche: "avalanche",
+};
+const sameAddress = (a: string, b: string) =>
+  a.startsWith("0x") ? a.toLowerCase() === b.toLowerCase() : a === b;
 async function resolveToken(c: Coin, signal?: AbortSignal) {
   if (c.dex) return c.dex;
   if (contracts[c.id]) return contracts[c.id];
   if (nativeIds.has(c.id)) return null;
-  const platformChains: Record<string, string> = {
-    ethereum: "ethereum",
-    base: "base",
-    solana: "solana",
-    "binance-smart-chain": "bsc",
-    "arbitrum-one": "arbitrum",
-    "polygon-pos": "polygon",
-    "optimistic-ethereum": "optimism",
-    avalanche: "avalanche",
-  };
   try {
     const detail = await request<{ platforms: Record<string, string> }>(
       `${CG}/coins/${encodeURIComponent(c.id)}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`,
@@ -85,6 +88,34 @@ async function resolveToken(c: Coin, signal?: AbortSignal) {
     /* Missing metadata leaves on-chain fields explicitly unavailable. */
   }
   return null;
+}
+async function resolveCoinId(c: Coin, signal?: AbortSignal) {
+  if (!c.dex) return c.id;
+  const token = c.dex;
+  const known = Object.entries(contracts).find(
+    ([, t]) => t.chain === token.chain && sameAddress(t.address, token.address),
+  );
+  if (known) return known[0];
+  const platform = Object.keys(platformChains).find(
+    (id) => platformChains[id] === token.chain,
+  );
+  if (!platform) return null;
+  try {
+    const detail = await request<{
+      id: string;
+      platforms: Record<string, string>;
+    }>(
+      `${CG}/coins/${platform}/contract/${encodeURIComponent(token.address)}`,
+      signal,
+    );
+    return typeof detail.id === "string" &&
+      detail.platforms?.[platform] &&
+      sameAddress(detail.platforms[platform], token.address)
+      ? detail.id
+      : null;
+  } catch {
+    return null;
+  }
 }
 const products: Record<string, string> = {
   bitcoin: "BTC",
@@ -289,20 +320,35 @@ export async function hydrateCoin(
     (c.dex || (c.current_price !== null && c.provenance?.status === "live"))
   )
     return c;
+  if (c.dex) {
+    const token = c.dex;
+    const data = await request<{ pairs: Pair[] | null }>(
+      `https://api.dexscreener.com/latest/dex/tokens/${token.address}`,
+      signal,
+    );
+    const pairs = (data.pairs ?? []).filter(
+      (p) =>
+        p.chainId === token.chain &&
+        sameAddress(p.baseToken.address, token.address),
+    );
+    const pair = pairs.find((p) => p.pairAddress === token.pair) ?? pairs[0];
+    if (!pair) throw new Error("Harga pasangan belum tersedia");
+    return { ...pairCoin(pair), id: c.id };
+  }
   const data = await request<Coin[]>(
     `${CG}/coins/markets?vs_currency=usd&ids=${encodeURIComponent(c.id)}&sparkline=true`,
     signal,
   );
-  return data[0]
-    ? {
-        ...data[0],
-        provenance: {
-          source: "CoinGecko",
-          status: "live",
-          at: data[0].last_updated ?? new Date().toISOString(),
-        },
-      }
-    : c;
+  const coin = data.find((i) => i.id === c.id);
+  if (!coin) throw new Error("Harga koin belum tersedia");
+  return {
+    ...coin,
+    provenance: {
+      source: "CoinGecko",
+      status: "live",
+      at: coin.last_updated ?? new Date().toISOString(),
+    },
+  };
 }
 const cbCandles = (d: number[][]): Candle[] =>
   d
@@ -634,7 +680,7 @@ export async function getExchanges(
   c: Coin,
   stats: Resource<TokenStats>,
   signal?: AbortSignal,
-): Promise<Resource<Exchange[]>> {
+): Promise<ExchangeResource> {
   const dexRows: Exchange[] = stats.data.pairs.map((p) => ({
     name: p.dexId,
     kind: "DEX",
@@ -644,40 +690,58 @@ export async function getExchanges(
     liquidity: p.liquidity?.usd,
     url: p.url,
   }));
-  if (c.dex)
-    return {
-      ...live(dexRows, "DEX Screener"),
-      status: stats.status,
-      at: stats.at,
-      note: stats.note,
-    };
-  try {
-    const d = await request<{ tickers: Ticker[] }>(
-      `${CG}/coins/${encodeURIComponent(c.id)}/tickers?order=volume_desc&depth=false`,
-      signal,
-    );
-    return stats.status === "snapshot" && dexRows.length
-      ? stored(
-          [...tickers(d.tickers), ...dexRows],
-          "CoinGecko · DEX Screener",
-          "Data DEX dari snapshot; CEX baru diperbarui.",
-        )
-      : live([...tickers(d.tickers), ...dexRows], "CoinGecko · DEX Screener");
-  } catch {
-    if (c.id === "bitcoin")
-      return stored(tickers(raw.bitcoin.tickers as Ticker[]), "CoinGecko");
-    if (c.id === "pepe")
-      return stored(
-        [...tickers(raw.pepe.tickers as Ticker[]), ...dexRows],
-        "CoinGecko · DEX Screener",
-        "Daftar CEX dari snapshot; status DEX mengikuti data on-chain.",
-      );
+  const coinId = await resolveCoinId(c, signal);
+  if (!coinId)
     return {
       data: dexRows,
       source: "DEX Screener",
       status: dexRows.length ? stats.status : "error",
-      at: new Date().toISOString(),
-      note: "Daftar CEX belum tersedia. Coba lagi nanti.",
+      at: stats.at,
+      note: "Cakupan CEX belum tersedia untuk kontrak ini",
+      cexAvailable: false,
+    };
+  try {
+    const d = await request<{ tickers: Ticker[] }>(
+      `${CG}/coins/${encodeURIComponent(coinId)}/tickers?order=volume_desc&depth=false`,
+      signal,
+    );
+    return {
+      ...(stats.status === "snapshot" && dexRows.length
+        ? stored(
+            [...tickers(d.tickers), ...dexRows],
+            "CoinGecko · DEX Screener",
+            "Data DEX dari snapshot; CEX baru diperbarui.",
+          )
+        : live(
+            [...tickers(d.tickers), ...dexRows],
+            "CoinGecko · DEX Screener",
+          )),
+      cexAvailable: true,
+    };
+  } catch {
+    if (coinId === "bitcoin")
+      return {
+        ...stored(tickers(raw.bitcoin.tickers as Ticker[]), "CoinGecko"),
+        cexAvailable: true,
+      };
+    if (coinId === "pepe")
+      return {
+        ...stored(
+          [...tickers(raw.pepe.tickers as Ticker[]), ...dexRows],
+          "CoinGecko · DEX Screener",
+          "Daftar CEX dari snapshot; status DEX mengikuti data on-chain.",
+        ),
+        cexAvailable: true,
+      };
+    return {
+      data: dexRows,
+      source: "DEX Screener",
+      status: dexRows.length ? stats.status : "error",
+      at: stats.at,
+      note: c.dex
+        ? "Cakupan CEX belum tersedia untuk kontrak ini"
+        : "Daftar CEX belum tersedia. Coba lagi nanti.",
+      cexAvailable: false,
     };
   }
 }

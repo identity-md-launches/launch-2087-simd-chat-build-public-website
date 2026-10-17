@@ -9,7 +9,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "typecheck": "tsc --noEmit",
     "refresh:snapshot": "node scripts/refresh-snapshot.mjs",
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "validate:revision": "node scripts/validate-revision.mjs"
   },
   "dependencies": {
     "react": "19.2.0",

@@ -284,16 +284,6 @@ ul {
   width: 100%;
   height: 90px;
 }
-.sidebar-bottom > p {
-  font-size: var(--text-lg);
-  line-height: 1.6;
-  padding: 20px 12px 10px;
-  color: var(--color-text-muted);
-  letter-spacing: -0.025em;
-}
-.sidebar-bottom > p strong {
-  color: var(--color-text);
-}
 .sidebar-bottom > span {
   font-size: var(--text-xs);
   padding-inline: 12px;
@@ -704,6 +694,7 @@ select option {
 }
 .chart-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -764,6 +755,7 @@ select option {
 }
 .chart-actions {
   display: flex;
+  margin-inline-start: auto;
   align-items: center;
   gap: 8px;
 }
@@ -1280,6 +1272,20 @@ tbody tr:last-child td {
   white-space: nowrap;
   font-weight: 500;
 }
+.coin-row-price {
+  display: grid;
+  gap: 4px;
+}
+.coin-row-price .data-status {
+  white-space: normal;
+  max-inline-size: 150px;
+  align-items: flex-start;
+  font-weight: 400;
+}
+.coin-row-price .data-status > svg {
+  flex-shrink: 0;
+  margin-block-start: 3px;
+}
 .sparkline {
   width: 100px;
   height: 32px;
@@ -1380,11 +1386,6 @@ tbody tr:last-child td {
   padding-block: 6px 25px;
   font-size: var(--text-xs);
   color: var(--color-text-muted);
-}
-.page-footer > span:first-child {
-  display: flex;
-  align-items: center;
-  gap: 7px;
 }
 .footer-brand {
   display: flex;
@@ -1666,9 +1667,6 @@ tbody tr:last-child td {
   }
   .page-heading p {
     max-width: none;
-  }
-  .sidebar-bottom > p {
-    font-size: var(--text-base);
   }
   .footer-brand {
     display: none;
@@ -2158,9 +2156,6 @@ tbody tr:last-child td {
     justify-content: center;
     gap: 8px;
     text-align: center;
-    font-size: var(--text-xs);
-  }
-  .page-footer > span:first-child {
     font-size: var(--text-xs);
   }
   .info-dialog {

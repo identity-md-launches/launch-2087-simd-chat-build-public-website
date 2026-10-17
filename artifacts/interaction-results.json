@@ -1,92 +1,92 @@
 {
-  "at": "2026-10-17T16:07:46.790Z",
+  "at": "2026-10-17T16:46:46.934Z",
   "snapshotAt": "2026-10-17T15:50:46.439Z",
   "target": "dist/ at /preview/",
   "checks": [
     {
       "name": "chromium: production export loads at /preview/",
       "passed": true,
-      "durationMs": 500
+      "durationMs": 658
     },
     {
       "name": "chromium: native buy/sell uses Coinbase taker side",
       "passed": true,
-      "durationMs": 125
+      "durationMs": 828
     },
     {
       "name": "chromium: 7 day range, line chart and accessible candle table",
       "passed": true,
-      "durationMs": 245
+      "durationMs": 1312
     },
     {
       "name": "chromium: unavailable chart and retry remain honest",
       "passed": true,
-      "durationMs": 180
+      "durationMs": 494
     },
     {
       "name": "chromium: search by name selects Pepe and loads on-chain stats",
       "passed": true,
-      "durationMs": 234
+      "durationMs": 484
     },
     {
       "name": "chromium: DEX buy and sell history match actual token direction",
       "passed": true,
-      "durationMs": 195
+      "durationMs": 430
     },
     {
       "name": "chromium: CEX and DEX exchange filters and external links",
       "passed": true,
-      "durationMs": 158
+      "durationMs": 432
     },
     {
       "name": "chromium: save, reload, remove and empty watchlist",
       "passed": true,
-      "durationMs": 501
+      "durationMs": 1610
     },
     {
       "name": "chromium: price filters, sort and load more",
       "passed": true,
-      "durationMs": 213
+      "durationMs": 469
     },
     {
       "name": "chromium: contract search and DEX explorer",
       "passed": true,
-      "durationMs": 361
+      "durationMs": 818
     },
     {
       "name": "chromium: empty search recovers",
       "passed": true,
-      "durationMs": 169
+      "durationMs": 400
     },
     {
       "name": "chromium: IDR conversion is functional",
       "passed": true,
-      "durationMs": 73
+      "durationMs": 194
     },
     {
       "name": "chromium: dialog keyboard dismissal and focus restoration",
       "passed": true,
-      "durationMs": 144
+      "durationMs": 434
     },
     {
       "name": "chromium: mobile layout, first action and menu",
       "passed": true,
-      "durationMs": 562
+      "durationMs": 1546
     },
     {
       "name": "chromium: WCAG A/AA automated accessibility scan",
       "passed": true,
-      "durationMs": 1136
+      "durationMs": 2150
     },
     {
       "name": "chromium: automatic refresh after 60 seconds (virtual clock)",
       "passed": true,
-      "durationMs": 59
+      "durationMs": 121
     },
     {
       "name": "chromium: API failure has honest snapshots and usable search fallback",
       "passed": true,
-      "durationMs": 345
+      "durationMs": 823
     },
     {
       "name": "chromium: zero JavaScript errors and missing local assets",
@@ -95,6 +95,6 @@
     }
   ],
   "limitations": [
-    "WebKit could not launch: Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libgtk-4.so.1                                    ║\n║     libgraphene-1.0.so.0                             ║\n║     libwoff2dec.so.1.0.2                             ║\n║     libevent-2.1.so.7                                ║\n║     libgstallocators-1.0.so.0                        ║\n║     libgstapp-1.0.so.0                               ║\n║     libgstpbutils-1.0.so.0                           ║\n║     libgstaudio-1.0.so.0                             ║\n║     libgsttag-1.0.so.0                               ║\n║     libgstvideo-1.0.so.0                             ║\n║     libgstgl-1.0.so.0                                ║\n║     libgstcodecparsers-1.0.so.0                      ║\n║     libgstfft-1.0.so.0                               ║\n║     libavif.so.16                                    ║\n║     libharfbuzz-icu.so.0                             ║\n║     libenchant-2.so.2                                ║\n║     libsecret-1.so.0                                 ║\n║     libhyphen.so.0                                   ║\n║     libwayland-server.so.0                           ║\n║     libmanette-0.2.so.0                              ║\n║     libGLESv2.so.2                                   ║\n╚══════════════════════════════════════════════════════╝"
+    "WebKit could not launch: Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libgtk-4.so.1                                    ║\n║     libpangocairo-1.0.so.0                           ║\n║     libgdk_pixbuf-2.0.so.0                           ║\n║     libcairo-gobject.so.2                            ║\n║     libgraphene-1.0.so.0                             ║\n║     liblcms2.so.2                                    ║\n║     libwoff2dec.so.1.0.2                             ║\n║     libvpx.so.9                                      ║\n║     libevent-2.1.so.7                                ║\n║     libopus.so.0                                     ║\n║     libgstallocators-1.0.so.0                        ║\n║     libgstapp-1.0.so.0                               ║\n║     libgstpbutils-1.0.so.0                           ║\n║     libgstaudio-1.0.so.0                             ║\n║     libgsttag-1.0.so.0                               ║\n║     libgstvideo-1.0.so.0                             ║\n║     libgstgl-1.0.so.0                                ║\n║     libgstcodecparsers-1.0.so.0                      ║\n║     libgstfft-1.0.so.0                               ║\n║     libflite.so.1                                    ║\n║     libflite_usenglish.so.1                          ║\n║     libflite_cmu_grapheme_lang.so.1                  ║\n║     libflite_cmu_grapheme_lex.so.1                   ║\n║     libflite_cmu_indic_lang.so.1                     ║\n║     libflite_cmu_indic_lex.so.1                      ║\n║     libflite_cmulex.so.1                             ║\n║     libflite_cmu_time_awb.so.1                       ║\n║     libflite_cmu_us_awb.so.1                         ║\n║    "
   ]
 }

@@ -73,6 +73,7 @@ export interface Resource<T> {
   status: "live" | "snapshot" | "error";
   note?: string;
 }
+export type ExchangeResource = Resource<Exchange[]> & { cexAvailable: boolean };
 export type Period = "1" | "7" | "30";
 export interface GlobalData {
   total_market_cap: Record<string, number>;

@@ -18,7 +18,6 @@ import {
   Radio,
   RefreshCw,
   Search as SearchIcon,
-  ShieldCheck,
   SlidersHorizontal,
   Star,
   TrendingUp,
@@ -50,7 +49,7 @@ import {
 import type {
   Candle,
   Coin,
-  Exchange,
+  ExchangeResource,
   GlobalData,
   Period,
   Resource,
@@ -141,7 +140,7 @@ export default function App() {
     initialStats(selected),
   );
   const [trades, setTrades] = useState<Resource<Trade[]> | null>(null),
-    [exchanges, setExchanges] = useState<Resource<Exchange[]> | null>(null);
+    [exchanges, setExchanges] = useState<ExchangeResource | null>(null);
   const [saved, setSaved] = useState<Coin[]>(readSaved),
     [period, setPeriod] = useState<Period>("1"),
     [currency, setCurrency] = useState<Currency>("USD");
@@ -195,13 +194,39 @@ export default function App() {
         setGlobal(g);
         setMarketBusy(false);
         setSelected((c) => m.data.find((i) => i.id === c.id) ?? c);
-        if (!selected.dex && !m.data.some((c) => c.id === selected.id)) {
-          void hydrateCoin(selected, a.signal, true)
+        setSaved((current) =>
+          current.map(
+            (c) =>
+              m.data.find(
+                (i) => i.id === c.id && i.provenance?.status === "live",
+              ) ?? c,
+          ),
+        );
+        // Saved coins outside the top 50 need their own price refresh, even when
+        // another coin is selected. Match current state so removal stays removed.
+        const extraCoins = new Map([...saved, selected].map((c) => [c.id, c]));
+        for (const c of extraCoins.values()) {
+          if (
+            m.data.some((i) => i.id === c.id && i.provenance?.status === "live")
+          )
+            continue;
+          void hydrateCoin(c, a.signal, true)
+            .catch(
+              (): Coin => ({
+                ...c,
+                provenance: c.provenance && {
+                  ...c.provenance,
+                  status: "snapshot",
+                },
+              }),
+            )
             .then((c) => {
-              if (!a.signal.aborted)
-                setSelected((current) => (current.id === c.id ? c : current));
-            })
-            .catch(() => {});
+              if (a.signal.aborted) return;
+              setSelected((current) => (current.id === c.id ? c : current));
+              setSaved((current) =>
+                current.map((i) => (i.id === c.id ? c : i)),
+              );
+            });
         }
       },
     );
@@ -348,9 +373,16 @@ export default function App() {
   }
   const allCoins = [...markets.data];
   if (!allCoins.some((c) => c.id === selected.id)) allCoins.push(selected);
-  const savedResolved = saved.map(
-    (c) => allCoins.find((i) => i.id === c.id) ?? c,
-  );
+  const savedResolved = saved.map((c) => {
+    const current = allCoins.find((i) => i.id === c.id);
+    if (!current) return c;
+    if (current.provenance?.status !== c.provenance?.status)
+      return c.provenance?.status === "live" ? c : current;
+    return Date.parse(c.provenance?.at ?? "") >
+      Date.parse(current.provenance?.at ?? "")
+      ? c
+      : current;
+  });
   let rows = (
     view === "watchlist"
       ? savedResolved
@@ -372,6 +404,14 @@ export default function App() {
           (a.price_change_percentage_24h ?? -Infinity)
         : (b.market_cap ?? -1) - (a.market_cap ?? -1),
   );
+  const displayedRows = rows.slice(0, limit);
+  const freshRows = displayedRows.filter(
+    (c) => c.provenance?.status === "live",
+  ).length;
+  const snapshotRows = displayedRows.filter(
+    (c) => c.provenance?.status === "snapshot",
+  ).length;
+  const unavailableRows = displayedRows.length - freshRows - snapshotRows;
   const featured = ["bitcoin", "ethereum", "solana", "pepe"]
     .map(
       (id) =>
@@ -480,11 +520,6 @@ export default function App() {
               </g>
             </svg>
           </div>
-          <p>
-            Pasar bergerak.
-            <br />
-            <strong>Tetap terhubung.</strong>
-          </p>
           <span className="muted">API publik tanpa akun.</span>
           <button
             type="button"
@@ -965,7 +1000,7 @@ export default function App() {
                           </tr>
                         </thead>
                         <tbody>
-                          {rows.slice(0, limit).map((c, i) => (
+                          {displayedRows.map((c, i) => (
                             <tr
                               key={c.id}
                               className={
@@ -1007,7 +1042,21 @@ export default function App() {
                                 </button>
                               </td>
                               <td className="numeric">
-                                {price(c.current_price, currency, rate)}
+                                <div className="coin-row-price">
+                                  <span>
+                                    {price(c.current_price, currency, rate)}
+                                  </span>
+                                  <DataStatus
+                                    resource={
+                                      c.provenance ?? {
+                                        source: "Data tersimpan",
+                                        status: "error",
+                                        at: "",
+                                      }
+                                    }
+                                    compact={c.provenance?.status === "live"}
+                                  />
+                                </div>
                               </td>
                               <td>
                                 <Change value={c.price_change_percentage_24h} />
@@ -1055,7 +1104,15 @@ export default function App() {
                         Menampilkan {Math.min(limit, rows.length)} dari{" "}
                         {rows.length} koin{" "}
                         <span className="table-data-status">
-                          <DataStatus resource={markets} compact />
+                          {[
+                            freshRows ? `${freshRows} terbaru` : "",
+                            snapshotRows ? `${snapshotRows} snapshot` : "",
+                            unavailableRows
+                              ? `${unavailableRows} belum tersedia`
+                              : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")}
                         </span>
                       </span>
                       {rows.length > limit ? (
@@ -1296,7 +1353,11 @@ export default function App() {
                     <p>
                       {exchangeFilter === "all"
                         ? "Daftar pasar belum tersedia. Coba perbarui data."
-                        : `Belum ada pasar ${exchangeFilter} dari sumber untuk ${selected.name}.`}
+                        : exchangeFilter === "CEX" &&
+                            selected.dex &&
+                            !exchanges?.cexAvailable
+                          ? "Cakupan CEX belum tersedia untuk kontrak ini"
+                          : `Belum ada pasar ${exchangeFilter} dari sumber untuk ${selected.name}.`}
                     </p>
                     <button
                       className="text-button"
@@ -1314,10 +1375,6 @@ export default function App() {
             )}
           </section>
           <footer className="page-footer">
-            <span>
-              <ShieldCheck size={14} />
-              Data terbuka untuk keputusan yang lebih baik.
-            </span>
             <button
               className="text-button"
               type="button"

@@ -1,0 +1,86 @@
+{
+  "browser": "Chromium 141 / production export at /preview/",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "watchlist": {
+    "row": "\t62\t\np\nPepe\nPEPE\n\tUS$0,00000390\t\n−2,45%\n\t$1,64 M\t$128,25 Jt\t\n\t",
+    "footer": "Menampilkan 4 dari 4 koin \nTerbaru\nHarga dalam USD",
+    "provenance": {
+      "source": "CoinGecko",
+      "status": "snapshot",
+      "at": "2026-10-17T15:49:47.000Z"
+    },
+    "pepeRefreshRequests": 0
+  },
+  "cex": {
+    "nameCount": 10,
+    "contractCount": 0,
+    "message": "Daftar pantauan\n4\nRiwayat transaksi\nBursa CEX / DEX\nPasar Pepe\n\nPasangan yang dilaporkan penyedia. Volume bukan likuiditas.\n\nSemua\nCEX\nDEX\nTerbaru · 17 Okt, 18.33 GMT+2\n\nBelum ada pasar CEX dari sumber untuk Pepe.\n\nMuat semua pasar",
+    "coinGeckoRequestsAfterContractSelection": []
+  },
+  "slogans": {
+    "sidebar": {
+      "text": "Pasar bergerak.\nTetap terhubung.",
+      "rect": {
+        "x": 20,
+        "y": 597.8125,
+        "width": 179,
+        "height": 126,
+        "top": 597.8125,
+        "right": 199,
+        "bottom": 723.8125,
+        "left": 20
+      }
+    },
+    "footer": "Data terbuka untuk keputusan yang lebih baik.\nSumber & cakupan data\nEverted Hand Swarm\n© 2026"
+  },
+  "longName": {
+    "viewport": {
+      "width": 320,
+      "height": 700
+    },
+    "card": {
+      "x": 16,
+      "y": 381.390625,
+      "width": 288,
+      "height": 730,
+      "top": 381.390625,
+      "right": 304,
+      "bottom": 1111.390625,
+      "left": 16
+    },
+    "heading": {
+      "x": 29,
+      "y": 400.390625,
+      "width": 262,
+      "height": 83,
+      "top": 400.390625,
+      "right": 291,
+      "bottom": 483.390625,
+      "left": 29
+    },
+    "actions": {
+      "x": 233,
+      "y": 421.890625,
+      "width": 82,
+      "height": 40,
+      "top": 421.890625,
+      "right": 315,
+      "bottom": 461.890625,
+      "left": 233
+    },
+    "expand": {
+      "x": 275,
+      "y": 421.890625,
+      "width": 40,
+      "height": 40,
+      "top": 421.890625,
+      "right": 315,
+      "bottom": 461.890625,
+      "left": 275
+    },
+    "name": "Artificial Superintelligence Alliance"
+  }
+}

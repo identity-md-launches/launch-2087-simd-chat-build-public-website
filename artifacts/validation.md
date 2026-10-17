@@ -2,6 +2,55 @@
 
 Laporan pemeriksaan pekerja untuk export statis Everted Hand Swarm. Pemeriksaan ini bukan sertifikasi perilaku oleh verifier eksternal.
 
+## Revisi atas empat temuan
+
+Revisi mempertahankan implementasi yang diterima dan membatasi perubahan pada provenance/pembaruan pantauan, pencocokan identitas kontrak untuk bursa, kontrol grafik bernama panjang, serta dua slogan. Keempat laporan direproduksi pada export awal dengan respons API tersimpan sebelum sumber diubah. Bukti awal diringkas di `revision/reproduction.json`; keputusan per ID ada di `../.imd-responses.json`.
+
+| Temuan dan sumber final | Bukti sebelum | Perbaikan dan pemeriksaan ulang |
+| --- | --- | --- |
+| Tinggi, pantauan — `src/App.tsx:207`, `src/App.tsx:376`, `src/App.tsx:1045`, `src/App.tsx:1106`; `src/api.ts:313` | PEPE snapshot bertanggal `2026-10-17T15:49:47.000Z`, tanpa permintaan `ids=pepe`, di bawah footer Terbaru | Siklus refresh meminta koin tersimpan di luar respons pasar, termasuk DEX. Sel harga menampilkan `DataStatus` milik koin; footer menghitung baris terlihat. Request tertunda memperlihatkan waktu Snapshot dan “3 terbaru · 1 snapshot”; sukses menjadi “4 terbaru”; gagal kembali Snapshot dengan waktu sebelumnya. Polling 60 detik diuji memakai waktu virtual. Penghapusan saat request berlangsung tidak menambah koin kembali. |
+| Tinggi, cakupan CEX — `src/api.ts:92`, `src/api.ts:679`, `src/App.tsx:1358` | Hasil nama PEPE: 10 CEX; kontrak Ethereum: 0 CEX, tanpa lookup CoinGecko | Identitas diverifikasi melalui pemetaan chain/alamat yang ada atau metadata kontrak CoinGecko. Ticker digabung dengan pasangan DEX. Nama dan kontrak sama-sama menampilkan 10 CEX pada 390/1440 px; filter DEX tetap berfungsi. Kegagalan ticker memakai snapshot CEX berlabel. Pulsechain dengan alamat yang sama tidak dianggap Ethereum dan menampilkan cakupan CEX belum tersedia. Uji adaptor WETH memeriksa resolusi umum dan penolakan alamat metadata yang berbeda. |
+| Sedang, salinan — `src/App.tsx:506`, `src/App.tsx:1377` | Paragraf slogan sidebar setinggi 126 px dan slogan footer | Keduanya dihapus bersama CSS yang tidak dipakai. Kelompok sumber/help tetap bottom-aligned dan menyusut tanpa placeholder. Screenshot desktop final diperiksa. |
+| Sedang, reflow — `src/styles.css:695`, `src/styles.css:756` | Pada 320 px, tombol expand berakhir di x=315, di luar content edge x=291 dan card border x=304 | Heading membungkus; action group memiliki margin inline otomatis. Nama lengkap tetap tampil. Tombol berukuran 40 × 40 px pada baris kedua, dengan tepi kanan x=249/x=291. Expand berfungsi dan lebar dokumen tetap 320. |
+
+### Cakupan enam domain pada revisi
+
+| Domain | Cakupan yang diperiksa | Batas yang belum diverifikasi |
+| --- | --- | --- |
+| Accessibility — Checked | Tombol native dan nama simpan/perbesar tetap utuh; fokus Cari terlihat di screenshot 390. Pemeriksaan keyboard dialog/drawer awal diulang; axe A/AA melaporkan 0 pelanggaran. Timestamp teks tidak mengandalkan warna. | Screen reader, forced-colors dan perangkat fisik tidak diuji. |
+| Layout — Checked | Screenshot export di 320/390/1440; alur nama panjang dan hasil kontrak, sumber/help sidebar, footer, dan tabel pantauan. Suite awal menguji reflow pada 800/1050 juga. | Native zoom 200% dan mirror RTL tidak diulang pada revisi ini. |
+| Writing — Checked | Dua slogan dihapus, status per baris dan hitungan campuran sesuai data, pesan cakupan CEX tidak mengklaim tidak ada bursa. Terminologi Indonesia yang ada dipertahankan. | Respons teks dari semua token/provider tidak diaudit satu per satu. |
+| Typography — Checked | Nama panjang tetap lengkap; status memakai ukuran 12 px dari skala yang ada, tidak menambah font/ukuran; timestamp dapat membungkus. Probe type-sizes/type-faces/tracking lulus. | Semua kemungkinan nama koin dan sistem font fallback tidak diuji. |
+| Colors — Checked | Token hitam/neon dipertahankan. Probe kontras rendered dan axe lulus pada state yang diuji; status menggunakan teks/ikon juga. | Tidak mengklaim pengukuran setiap latar/state atau sertifikasi aksesibilitas. |
+| UI — Checked | Snapshot/pending/sukses/gagal, save/remove/reload, filter CEX/DEX dan expand diuji. Kontrol tetap 40 px pada ponsel; reduced-motion aktif pada suite dan probe motion lulus. | Replay animasi 10% di panel Animations tidak dilakukan. |
+
+### Perintah aktual pada revisi
+
+Dependensi dipasang di `test/scratch/toolchain/`; direktori ini tidak diserahkan. Typecheck memakai konfigurasi strict root dengan alias dependency scratch, sama seperti putaran awal.
+
+```sh
+node test/scratch/toolchain/node_modules/typescript/bin/tsc --project test/scratch/tsconfig.json --noEmit
+# exit 0
+EHS_DEPENDENCY_ROOT=test/scratch/toolchain node test/scratch/toolchain/node_modules/vite/bin/vite.js build --configLoader native
+# exit 0; final export: CSS 34.57 kB, JS 424.97 kB; build.log
+EHS_DEPENDENCY_ROOT=test/scratch/toolchain PLAYWRIGHT_BROWSERS_PATH=/tmp/ehs-revision-browsers node scripts/validate.mjs
+# exit 0; 18/18 Chromium, 0 axe violations, 0 JavaScript/local asset errors
+EHS_DEPENDENCY_ROOT=test/scratch/toolchain PLAYWRIGHT_BROWSERS_PATH=/tmp/ehs-revision-browsers node scripts/validate-revision.mjs
+# exit 0; 9/9 browser regressions + 1/1 metadata adapter check
+PLAYWRIGHT_BROWSERS_PATH=/tmp/ehs-revision-browsers IMD_PLAYWRIGHT=./test/scratch/toolchain/node_modules/playwright/index.mjs node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste
+# exit 0; 15/16, unchanged FIGR_HELOC data-identifier exception
+```
+
+Probe dan kedua suite diulang pada export setelah perubahan sumber terakhir; metadata dan URL aset relatif diperiksa lagi. Semua interaksi browser berjalan di export `/preview/`. Respons harga individual kosong juga diuji: nilai lama tetap ada dan berlabel Snapshot sampai respons koin itu sendiri berhasil. Pemeriksaan awal script revisi menemukan dua asumsi test yang keliru (status global dianggap status pasar, dan nama tombol “Kecilkan” alih-alih “Perkecil”); keduanya dikoreksi pada test tanpa perubahan produk untuk menyamarkan hasil. Laporan final `revision/results.json` melaporkan 10/10 lulus.
+
+Screenshot final yang benar-benar dilihat: `revision/chromium-mobile.png`, `revision/chromium-desktop.png`, `revision/chromium-long-name-320.png`, `revision/chromium-watchlist-pending.png`, serta kedua screenshot CEX di `revision/`. Layar 390 × 844 memperlihatkan merek, produk, Cari dan awal grafik. Screenshot probe `test/scratch/taste/shots/1440.png` juga diperiksa langsung. Berkas scratch dihapus oleh proses penyerahan.
+
+Browser MCP dicoba dan menjawab bahwa Chromium `chrome` tidak tersedia. Pengujian berhasil memakai Playwright Chromium 141 langsung dengan server yang hanya hidup selama script foreground. WebKit diunduh dan dicoba, tetapi launcher menolak karena pustaka GTK/GStreamer dan pustaka sistem lain tidak tersedia; Safari tetap **belum diverifikasi**. Pemeriksaan HTTP langsung baru pada endpoint identitas WETH dan ticker PEPE sama-sama menghasilkan HTTP 200 (`revision/live-api.json`); ini adalah smoke dari pekerja, bukan bukti CORS/browser untuk semua kontrak. Fixture WETH hanya metadata dari quote token pool tersimpan dan identitas yang didokumentasikan CoinGecko; tidak membuat harga pasar.
+
+**Complete for the stated revision scope.** Empat temuan direproduksi dan diperbaiki; batas browser/provider di atas tetap berlaku. `DESIGN.md`, README, export dan laporan ukuran telah diperbarui. Bagian di bawah adalah catatan putaran awal; screenshot/referensi baris lama di sana merupakan bukti historis, bukan gambar revisi.
+
+---
+
 ## Ringkasan
 
 | Area                                              | Hasil                                                                            |

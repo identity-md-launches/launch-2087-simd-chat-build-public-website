@@ -72,6 +72,8 @@ Produksi dibangun dengan Vite 7.1.12; typecheck TypeScript strict berhasil. Vali
 ```sh
 npx playwright install chromium
 npm run validate
+# Regresi untuk temuan revisi:
+npm run validate:revision
 # Tambahkan smoke test API langsung:
 npm run validate -- --live
 ```
@@ -79,6 +81,10 @@ npm run validate -- --live
 Skrip `scripts/validate.mjs` memakai respons API tersimpan yang nyata untuk uji deterministik, menguji 18 alur/keadaan, termasuk pencarian kontrak, angka kecil pada grafik, retry, filter, bursa, penyimpanan, keyboard, drawer, dialog, polling dengan waktu virtual, HTTP 429, dan offline. Jaringan langsung diperiksa terpisah. Hasil sementara ditulis ke `test/scratch/validation/`.
 
 Hasil pekerja, cakupan enam domain Better Interface, temuan, perbaikan, batas browser, screenshot, dan perintah aktual tercatat dalam **[artifacts/validation.md](artifacts/validation.md)**. Desain final didokumentasikan di **[DESIGN.md](DESIGN.md)**. Probe taste@1 terakhir meluluskan 15/16 pemeriksaan; satu penanda adalah ticker pasar asli `FIGR_HELOC`, yang dipertahankan sebagai identifier data. WebKit tidak dapat dijalankan karena dependensi sistem belum tersedia; pemeriksaan Chromium dan pemindaian axe dijalankan.
+
+Revisi ini memperbaiki keempat temuan yang berhasil direproduksi. Pantauan kini memperbarui harga koin tersimpan di luar 50 besar, menampilkan provenance per baris beserta waktu snapshot, dan menghitung status footer dari baris yang terlihat. Pencarian kontrak Ethereum PEPE menyediakan 10 pasar CEX yang sama dengan pencarian nama; kontrak lain menggunakan [metadata platform/alamat CoinGecko](https://docs.coingecko.com/demo/reference/coins-contract-address) bila tersedia. Identitas harus cocok dengan alamat dan jaringan; simbol saja tidak dipakai untuk mencocokkan koin. Kegagalan resolusi menampilkan “Cakupan CEX belum tersedia untuk kontrak ini”. Kontrol grafik membungkus untuk nama panjang pada 320 px, dan slogan sidebar/footer dihapus.
+
+Pemeriksaan revisi menggunakan respons tersimpan, permintaan tertunda/gagal, dan waktu virtual; ini bukan bukti ketersediaan API untuk semua kontrak. Hasil akhir dan screenshot revisi berada di `artifacts/revision/`; jawaban per temuan berada di `.imd-responses.json`. Pemeriksaan interaksi awal diulang dan lulus 18/18 di Chromium. Keterbatasan WebKit dan perangkat fisik tetap dicatat, tanpa klaim lulus Safari.
 
 Dependensi saat pengerjaan dipasang hanya di `test/scratch/`, lalu build menggunakan `EHS_DEPENDENCY_ROOT` agar direktori yang dilindungi tidak disentuh. Override ini opsional dan tidak diperlukan setelah `npm ci` biasa. Tidak ada dependency, cache, registry vendor, sourcemap, atau submodule dalam hasil yang diserahkan. `.gitignore` mengecualikan dependency/cache pada setiap tingkat dan secara eksplisit menyertakan `dist/` serta `artifacts/`. Anggaran path: artifacts maksimal 2 MiB, dist 1 MiB, seluruh berkas lain 3 MiB (termasuk ignore file maksimal 1 KiB), dan cadangan metadata bundle 2 MiB; total maksimum 8 MiB. Ukuran aktual ada di `artifacts/package-audit.json`.
 

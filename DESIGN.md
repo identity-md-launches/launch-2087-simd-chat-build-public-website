@@ -64,6 +64,10 @@ Pencarian tetap memakai font 16 px di ponsel, dengan tombol Cari minimal 44 px t
 
 Grafik SVG mengukur lebar kontainernya melalui `ResizeObserver`, memakai koordinat dan padding sumbu yang sesuai dengan lebar aktual, bukan mengecilkan semua label dari satu kanvas desktop. Pengaturan Perbesar grafik memperluas panel dalam alur dokumen.
 
+Heading grafik menggunakan flex yang dapat membungkus. Nama koin tetap lengkap; kelompok simpan/perbesar memiliki `margin-inline-start: auto` dan pindah ke baris berikutnya saat tidak muat. Kedua kontrol tetap 40 × 40 px pada ponsel. Kasus Artificial Superintelligence Alliance diperiksa pada 320 px.
+
+Bagian bawah sidebar mengelompokkan ilustrasi jaringan, “API publik tanpa akun.”, Tentang data, dan status sumber tanpa slogan. Footer berisi tombol Sumber & cakupan data dan identitas situs, tanpa ruang pengganti untuk salinan yang dihapus.
+
 Diuji secara rendered pada 320, 390, 800, 1050, dan 1440 px. Pembesaran teks 200% pada 800 px juga diperiksa. Layout di atas 1700 px dijelaskan berdasarkan sumber; browser-native zoom dan perangkat fisik belum diuji.
 
 ## Elevasi dan kedalaman
@@ -88,6 +92,10 @@ Radius token: 6 px (`--radius-sm`), 10 px (`--radius-md`), dan 14 px (`--radius-
 | Drawer dan `.info-dialog` di `src/App.tsx`                                                   | Escape, pemulihan fokus, dan fokus yang tetap di overlay; dialog informasi memakai elemen native `dialog`                                                                    |
 
 Pantauan tersimpan hanya di `localStorage` browser. Pembaruan API terjadi setiap 60 detik selama halaman aktif. Status `Terbaru`, `Snapshot`, dan `Belum tersedia` tidak boleh digabung menjadi klaim bahwa semua modul selalu langsung. Harga dan grafik dapat berasal dari penyedia berbeda; label snapshot harga berdiri sendiri.
+
+Setiap sel harga tabel memakai `.coin-row-price` dan `DataStatus` dari provenance koin itu sendiri. Snapshot menampilkan waktu lengkap di bawah harga; status terbaru ringkas menyimpan sumber/waktu pada atribut judul. Status footer menghitung baris yang sedang ditampilkan, termasuk campuran terbaru/snapshot. Koin tersimpan di luar respons pasar diperbarui tersendiri dalam siklus yang sama, termasuk token DEX. Kegagalan mempertahankan nilai dan waktu sebelumnya dengan label Snapshot.
+
+Hasil kontrak tetap mempertahankan konteks pasangan DEX. Daftar bursa menggabungkan pasangan tersebut dengan ticker CoinGecko setelah identitas koin diketahui dari pemetaan kontrak yang ada atau metadata platform/alamat yang cocok. Jika cakupan CEX belum tersedia, panel menyatakannya secara eksplisit; keadaan itu tidak berarti koin tidak terdaftar di CEX.
 
 Fokus memakai outline 2 px hijau dengan offset 4 px. Hover hanya aktif pada perangkat yang mendukung hover. Transisi hanya warna dan latar, 120 ms. Umpan balik tekan skala 0,96 dan spinner berjalan hanya jika `prefers-reduced-motion: no-preference`.
 
